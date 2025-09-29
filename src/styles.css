@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 210 40% 98%;
+  --fg: 220 25% 15%;
+  --primary: 47 95% 55%;
+  --primary-foreground: 240 10% 10%;
+  --secondary: 222 47% 11%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 3 85% 61%;
+  --accent-foreground: 0 0% 100%;
+  --muted: 215 16% 91%;
+  --muted-foreground: 220 9% 46%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 25% 15%;
+  --border: 220 13% 91%;
+  --ring: 47 95% 55%;
+  --grid-dot: 215 22% 85%;
+}
+
+.dark {
+  --bg: 222 47% 11%;
+  --fg: 213 31% 91%;
+  --primary: 47 95% 65%;
+  --primary-foreground: 240 10% 5%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 213 31% 91%;
+  --accent: 3 85% 61%;
+  --accent-foreground: 0 0% 100%;
+  --muted: 215 21% 16%;
+  --muted-foreground: 215 20% 65%;
+  --card: 222 47% 13%;
+  --card-foreground: 213 31% 91%;
+  --border: 215 25% 25%;
+  --ring: 47 95% 65%;
+  --grid-dot: 215 14% 35%;
+}
+
+@layer base {
+  html,
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  body {
+    background-image:
+      radial-gradient(
+        60rem 20rem at 10% -10%,
+        hsl(var(--primary) / 0.08),
+        transparent
+      ),
+      radial-gradient(
+        50rem 20rem at 110% 10%,
+        hsl(var(--accent) / 0.08),
+        transparent
+      );
+    background-repeat: no-repeat;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition border border-border bg-secondary text-secondaryForeground hover:shadow-glow;
+  }
+  .btn-primary {
+    @apply bg-primary text-primaryForeground hover:shadow-glow;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-foreground hover:bg-muted/30;
+  }
+  .btn-icon {
+    @apply inline-flex items-center justify-center rounded-md border border-border bg-secondary text-secondaryForeground hover:shadow-glow w-9 h-9;
+  }
+  .badge {
+    @apply inline-flex items-center rounded-full border border-border bg-muted text-mutedForeground text-xs px-2 py-0.5;
+  }
+  .card {
+    @apply bg-card text-cardForeground rounded-xl border border-border shadow-sm;
+  }
+}

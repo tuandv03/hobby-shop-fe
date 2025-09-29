@@ -1,0 +1,86 @@
+<div class="container mx-auto max-w-7xl px-4 py-8">
+  <h1 class="font-display text-3xl font-semibold mb-4">Danh sách Card</h1>
+  <form
+    (ngSubmit)="search()"
+    class="card p-4 mb-6 grid md:grid-cols-5 gap-3"
+  >
+    <input
+      [(ngModel)]="name"
+      name="name"
+      type="text"
+      placeholder="Tìm theo tên (VD: Blue-Eyes)"
+      class="w-full rounded-md border border-border bg-background px-3 py-2"
+    />
+    <input
+      [(ngModel)]="code"
+      name="code"
+      type="text"
+      placeholder="Mã code (VD SDK-001)"
+      class="w-full rounded-md border border-border bg-background px-3 py-2"
+    />
+    <select
+      [(ngModel)]="type"
+      name="type"
+      class="w-full rounded-md border border-border bg-background px-3 py-2"
+    >
+      <option value="">Tất cả loại</option>
+      <option value="Spell Card">Spell Card</option>
+      <option value="Trap Card">Trap Card</option>
+      <option value="XYZ Monster">XYZ Monster</option>
+      <option value="Link Monster">Link Monster</option>
+    </select>
+   <select
+        [(ngModel)]="rarity"
+        name="rarity"
+        class="w-full rounded-md border border-border bg-background px-3 py-2"
+    >
+        <option value="">Tất cả độ hiếm</option>
+        <option *ngFor="let r of rarities" [value]="r">{{ r }}</option>
+    </select>
+
+    <button class="btn btn-primary w-full md:w-auto">Tìm kiếm</button>
+  </form>
+
+  <div *ngIf="loading" class="text-mutedForeground">Đang tải...</div>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 place-items-center">
+    <div *ngFor="let c of cards" class="card p-2 w-[180px] md:w-[210px]">
+      <img
+        [src]="c.card_images?.[0]?.image_url_small"
+        [alt]="c.name"
+        class="w-full aspect-[3/4] object-cover rounded-md border border-border"
+      />
+      <div class="mt-2">
+        <h3 class="text-sm font-medium truncate" [title]="c.name">
+          {{ c.name }}
+        </h3>
+        <div class="flex items-center justify-between mt-2">
+          <span class="badge" *ngIf="c.card_prices?.[0]?.tcgplayer_price as p"
+            >&#36;{{ p }}</span
+          >
+          <div class="flex items-center gap-2">
+            <button
+              class="btn-icon"
+              title="Thêm vào giỏ"
+              (click)="addToCart(c)"
+            >
+              🛒
+            </button>
+            <button
+              class="btn-icon"
+              [class.opacity-50]="isWished(c.id)"
+              title="Yêu thích"
+              (click)="toggleWish(c.id)"
+            >
+              ❤
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && !cards.length" class="text-mutedForeground">
+    Không tìm thấy kết quả. Hãy thử từ khóa khác.
+  </div>
+</div>

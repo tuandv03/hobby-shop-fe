@@ -1,0 +1,118 @@
+<div class="min-h-screen flex flex-col">
+  <header
+    class="sticky top-0 z-40 bg-background/80 backdrop-blur border-b border-border"
+  >
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <a routerLink="/" class="flex items-center gap-3">
+        <span
+          class="inline-flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primaryForeground shadow-glow"
+          >★</span
+        >
+        <span class="font-display text-xl font-semibold">YGO Card Shop</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6">
+        <a
+          routerLink="/"
+          routerLinkActive="text-foreground"
+          class="text-mutedForeground hover:text-foreground"
+          >Trang chủ</a
+        >
+
+        <div class="relative group">
+          <a
+            routerLink="/cards"
+            routerLinkActive="text-foreground"
+            class="text-mutedForeground hover:text-foreground"
+            >Cards</a
+          >
+          <div
+            class="absolute left-0 top-full mt-2 min-w-52 card p-2 opacity-0 invisible translate-y-1 scale-95 transition group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100"
+          >
+            <a
+              routerLink="/cards"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >All Cards</a
+            >
+            <a
+              routerLink="/cards/staples"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >Staples Cards</a
+            >
+            <a
+              routerLink="/cards/hot"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >Hot Cards</a
+            >
+            <a
+              routerLink="/cards/archetypes"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >Archetypes</a
+            >
+          </div>
+        </div>
+
+        <a
+          routerLink="/sets"
+          routerLinkActive="text-foreground"
+          class="text-mutedForeground hover:text-foreground"
+          >Sets</a
+        >
+        <a
+          routerLink="/cart"
+          routerLinkActive="text-foreground"
+          class="text-mutedForeground hover:text-foreground"
+          >Giỏ hàng</a
+        >
+
+        <div class="relative group">
+          <a
+            routerLink="/admin/inventory"
+            routerLinkActive="text-foreground"
+            class="text-mutedForeground hover:text-foreground"
+            >Admin</a
+          >
+          <div
+            class="absolute left-0 top-full mt-2 min-w-52 card p-2 opacity-0 invisible translate-y-1 scale-95 transition group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 group-hover:scale-100"
+          >
+            <a
+              routerLink="/admin/inventory"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >Kho hàng</a
+            >
+            <a
+              routerLink="/admin/orders"
+              class="block px-3 py-2 rounded hover:bg-muted/50"
+              >Quản lý đơn hàng</a
+            >
+          </div>
+        </div>
+      </nav>
+      <div class="flex items-center gap-2">
+        <button
+          class="btn btn-ghost"
+          (click)="toggleTheme()"
+          [attr.aria-label]="dark() ? 'Light mode' : 'Dark mode'"
+        >
+          <span *ngIf="!dark(); else moon">☀️</span>
+          <ng-template #moon>🌙</ng-template>
+        </button>
+        <a routerLink="/cart" class="btn">
+          🛒<span class="ml-1" *ngIf="cartCount() as c">{{ c }}</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="border-t border-border">
+    <div
+      class="max-w-7xl mx-auto px-4 py-8 text-sm text-mutedForeground flex items-center justify-between"
+    >
+      <span>© {{ year }} YGO Card Shop</span>
+      <span>Yu-Gi-Oh! theme inspired UI</span>
+    </div>
+  </footer>
+</div>

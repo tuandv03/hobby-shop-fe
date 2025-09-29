@@ -1,0 +1,13 @@
+/* style riêng cho CardsList */
+.container {
+  font-family: sans-serif;
+}
+.card img {
+  transition: transform 0.2s ease;
+}
+.card img:hover {
+  transform: scale(1.05);
+}
+.btn-icon {
+  cursor: pointer;
+}
