@@ -57,7 +57,7 @@ export class CardsListComponent implements OnInit {
       })
       .subscribe({
         next: (cards) => {
-          this.cards = this.applyRarity(cards);
+         // this.cards = this.applyRarity(cards);
           this.loading = false;
         },
         error: () => {

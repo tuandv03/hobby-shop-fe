@@ -59,12 +59,12 @@ export const CARDS_ROUTES: Routes = [
       {
         path: "detail/:id",
         loadComponent: () =>
-          import("../pages/placeholder/placeholder.component").then(
-            (c) => c.PlaceholderComponent,
+          import("./card-detail/card-detail").then(
+            (c) => c.CardDetailComponent,
           ),
         data: {
           title: "Chi tiết card",
-          description: "Trang chi tiết card sẽ sớm có.",
+          description: "Trang chi tiết card.",
         },
       },
     ],
