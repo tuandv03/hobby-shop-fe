@@ -70,7 +70,7 @@ import {
         <ng-container *ngIf="hotCards.length; else loadingCards">
           <a
             *ngFor="let c of hotCards"
-            [routerLink]="['/cards', c.id]"
+            [routerLink]="['/detail', c.id]"
             class="card p-2 group w-[180px] md:w-[210px]"
           >
             <img
