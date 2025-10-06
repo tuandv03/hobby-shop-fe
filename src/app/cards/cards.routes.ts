@@ -57,7 +57,7 @@ export const CARDS_ROUTES: Routes = [
         data: { title: "Set Detail", description: "Danh sách card trong set." },
       },
       {
-        path: "detail/:id",
+        path: ":id",
         loadComponent: () =>
           import("./card-detail/card-detail").then(
             (c) => c.CardDetailComponent,
