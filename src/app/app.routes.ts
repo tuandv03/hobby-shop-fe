@@ -1,6 +1,5 @@
 import { Routes } from "@angular/router";
 import { HomePageComponent } from "./pages/home/home.component";
-import { adminGuard } from "./guards/admin.guard";
 
 export const routes: Routes = [
   { path: "", component: HomePageComponent, title: "Yu-Gi-Oh! Card Shop" },
@@ -42,7 +41,6 @@ export const routes: Routes = [
   },
   {
     path: "admin",
-    canMatch: [adminGuard],
     loadChildren: () =>
       import("./admin/admin.routes").then((m) => m.ADMIN_ROUTES),
   },

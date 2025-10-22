@@ -4,12 +4,10 @@ export const ADMIN_ROUTES: Routes = [
   {
     path: "inventory",
     loadComponent: () =>
-      import("../pages/placeholder/placeholder.component").then(
-        (c) => c.PlaceholderComponent,
-      ),
+      import("./inventory/inventory").then((c) => c.Inventory),
     data: {
       title: "Inventory (Admin)",
-      description: "Trang quản lý tồn kho sẽ sớm có.",
+      description: "Trang quản lý tồn kho.",
     },
   },
   {

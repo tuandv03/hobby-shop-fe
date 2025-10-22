@@ -9,6 +9,9 @@ export interface Card {
   race?: string;
   attribute?: string;
   archetype?: string;
+  rarity?: string;
+  card_sets?: CardSet[];
+  card_images?: CardImage[];
 }
 
 export interface CardImage {

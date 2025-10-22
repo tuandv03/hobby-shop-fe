@@ -74,7 +74,7 @@ import {
             class="card p-2 group w-[180px] md:w-[210px]"
           >
             <img
-              [src]="c.card_images[0]?.image_url_small"
+              [src]="c.card_images[0].image_url_small"
               [alt]="c.name"
               class="w-full aspect-[3/4] object-cover rounded-md border border-border"
             />
@@ -85,11 +85,6 @@ import {
               >
                 {{ c.name }}
               </h3>
-              <span
-                class="badge"
-                *ngIf="c.card_prices?.[0]?.tcgplayer_price as p"
-                >&#36;{{ p }}</span
-              >
             </div>
           </a>
         </ng-container>

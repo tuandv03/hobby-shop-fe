@@ -10,7 +10,7 @@ export const CARDS_ROUTES: Routes = [
         path: "",
         pathMatch: "full",
         loadComponent: () =>
-          import("./cards-list.component").then((c) => c.CardsListComponent),
+          import("./cards-list/cards-list").then((c) => c.CardsListComponent),
         data: { title: "All Cards", description: "Danh sách tất cả card." },
       },
       {

@@ -1,14 +1,14 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
+import { Router, RouterModule } from "@angular/router";
 import { YugiohApiService, YgoCard } from "../../core/yugioh-api.service";
 import { CartService } from "../cart.service";
 
 @Component({
   standalone: true,
   selector: "app-cards-list",
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: "./cards-list.html",
   styleUrls: ["./cards-list.css"],
 })
@@ -34,15 +34,7 @@ export class CardsListComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.getListRarity();
-    this.getListType();    
     this.search();
-  }
-  getListType() {
-    throw new Error("Method not implemented.");
-  }
-  getListRarity() {
-    throw new Error("Method not implemented.");
   }
 
   search() {
@@ -57,7 +49,7 @@ export class CardsListComponent implements OnInit {
       })
       .subscribe({
         next: (cards) => {
-         // this.cards = this.applyRarity(cards);
+          this.cards = this.applyRarity(cards);
           this.loading = false;
         },
         error: () => {
@@ -78,12 +70,11 @@ export class CardsListComponent implements OnInit {
   }
 
   addToCart(c: YgoCard) {
-    const price = parseFloat(c.card_prices?.[0]?.tcgplayer_price || "0");
     this.cart.add({
       id: c.id,
       name: c.name,
       image: c.card_images?.[0]?.image_url_small || "",
-      price,
+      price: 0,
       qty: 1,
     });
   }
@@ -95,5 +86,10 @@ export class CardsListComponent implements OnInit {
 
   isWished(id: number) {
     return this.wishlist.has(id);
+  }
+
+  onCardClick(id: number) {
+    console.log('Card clicked:', id);
+    console.log('Navigating to:', `/cards/${id}`);
   }
 }

@@ -45,19 +45,18 @@
 
   <div class="grid grid-cols-2 md:grid-cols-4 gap-4 place-items-center">
     <div *ngFor="let c of cards" class="card p-2 w-[180px] md:w-[210px]">
-      <img
-        [src]="c.card_images?.[0]?.image_url_small"
-        [alt]="c.name"
-        class="w-full aspect-[3/4] object-cover rounded-md border border-border"
-      />
+      <a [routerLink]="['/cards', c.id]" class="block" (click)="onCardClick(c.id)">
+        <img
+          [src]="c.card_images?.[0]?.image_url_small"
+          [alt]="c.name"
+          class="w-full aspect-[3/4] object-cover rounded-md border border-border hover:scale-105 transition-transform cursor-pointer"
+        />
+      </a>
       <div class="mt-2">
         <h3 class="text-sm font-medium truncate" [title]="c.name">
           {{ c.name }}
         </h3>
         <div class="flex items-center justify-between mt-2">
-          <span class="badge" *ngIf="c.card_prices?.[0]?.tcgplayer_price as p"
-            >&#36;{{ p }}</span
-          >
           <div class="flex items-center gap-2">
             <button
               class="btn-icon"

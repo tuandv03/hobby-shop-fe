@@ -71,11 +71,6 @@ import { CartService } from "./cart.service";
               {{ c.name }}
             </h3>
             <div class="flex items-center justify-between mt-2">
-              <span
-                class="badge"
-                *ngIf="c.card_prices?.[0]?.tcgplayer_price as p"
-                >&#36;{{ p }}</span
-              >
               <div class="flex items-center gap-2">
                 <button
                   class="btn-icon"
@@ -154,12 +149,11 @@ export class CardsListComponent implements OnInit {
   }
 
   addToCart(c: YgoCard) {
-    const price = parseFloat(c.card_prices?.[0]?.tcgplayer_price || "0");
     this.cart.add({
       id: c.id,
       name: c.name,
       image: c.card_images?.[0]?.image_url_small || "",
-      price,
+      price: 0,
       qty: 1,
     });
   }
