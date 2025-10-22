@@ -2,120 +2,125 @@
   <div class="container mx-auto px-6">
     <!-- Main Card Layout -->
     <div class="bg-white rounded-xl shadow-xl overflow-hidden border border-slate-200">
-      <div class="flex flex-col lg:flex-row">
+      <div class="flex flex-col lg:flex-row lg:min-h-[500px]">
       <!-- Card Image -->
-      <div class="lg:w-1/3 flex-shrink-0 p-6 flex items-start">
+      <div class="lg:w-1/3 flex-shrink-0 p-6 flex items-center justify-center">
         <img 
           [src]="cardDetail.images?.[0]?.image_url || '/assets/card-placeholder.jpg'" 
           [alt]="cardDetail.name"
-          class="w-full object-contain rounded-lg shadow-lg border-2 border-gray-200"
+          class="w-full max-h-[450px] object-contain rounded-lg shadow-lg border-2 border-gray-200"
         >
       </div>
       
       <!-- Card Information -->
-      <div class="lg:w-2/3 p-6">
-        <!-- Card Title and Stats -->
-        <div class="mb-6">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ cardDetail.name }}</h1>
-          
-          <!-- Views and Quick Links -->
-          <div class="flex items-center gap-4 mb-4 text-sm text-gray-600">
-            <span>👁 Views: 234,991</span>
-            <span>📅 Views this Week: 7,348</span>
+      <div class="lg:w-2/3 p-6 flex flex-col min-h-full">
+        <!-- Top Section: Card Info -->
+        <div class="flex-1">
+          <!-- Card Title and Stats -->
+          <div class="mb-4">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ cardDetail.name }}</h1>
+            
+            <!-- Views and Quick Links -->
+            <div class="flex items-center gap-4 mb-3 text-sm text-gray-600">
+              <span>👁 Views: 234,991</span>
+              <span>📅 Views this Week: 7,348</span>
+            </div>
+
+            <!-- Language Tags -->
+            <div class="flex flex-wrap gap-2 mb-3">
+              <span class="px-2 py-1 bg-orange-600 text-white text-xs rounded">EN</span>
+              <span class="px-2 py-1 bg-red-600 text-white text-xs rounded">FR</span>
+              <span class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">DE</span>
+              <span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">IT</span>
+              <span class="px-2 py-1 bg-green-600 text-white text-xs rounded">PT</span>
+            </div>
+
+            <!-- External Links -->
+            <div class="flex flex-wrap gap-2 mb-4 text-sm">
+              <a href="#" class="text-blue-600 hover:underline">🎮 TCGplayer</a>
+              <a href="#" class="text-blue-600 hover:underline">💰 Cardmarket</a>
+              <a href="#" class="text-blue-600 hover:underline">📖 Yugipedia</a>
+              <a href="#" class="text-blue-600 hover:underline">⭐ Card Rulings</a>
+              <a href="#" class="text-blue-600 hover:underline">🖼 Image (.jpg)</a>
+              <a href="#" class="text-blue-600 hover:underline">✂️ Image Cropped (.jpg)</a>
+              <a href="#" class="text-red-600 hover:underline">🚫 Report Bug</a>
+            </div>
           </div>
 
-          <!-- Language Tags -->
-          <div class="flex flex-wrap gap-2 mb-4">
-            <span class="px-2 py-1 bg-orange-600 text-white text-xs rounded">EN</span>
-            <span class="px-2 py-1 bg-red-600 text-white text-xs rounded">FR</span>
-            <span class="px-2 py-1 bg-yellow-600 text-white text-xs rounded">DE</span>
-            <span class="px-2 py-1 bg-blue-600 text-white text-xs rounded">IT</span>
-            <span class="px-2 py-1 bg-green-600 text-white text-xs rounded">PT</span>
+          <!-- Card Stats Grid -->
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
+            <!-- First Row -->
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">Type</div>
+              <div class="text-sm font-bold">🎯 {{ cardDetail.type }}</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">Attribute</div>
+              <div class="text-sm font-bold">⚫ {{ cardDetail.attribute }}</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">Level/Rank</div>
+              <div class="text-sm font-bold">⭐ {{ cardDetail.level }}</div>
+            </div>
+
+            <!-- Second Row -->
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">ATK</div>
+              <div class="text-sm font-bold">⚔️ {{ cardDetail.atk }}</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">DEF</div>
+              <div class="text-sm font-bold">🛡️ {{ cardDetail.def }}</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">Typing</div>
+              <div class="text-sm font-bold">🤖 {{ cardDetail.race }}</div>
+            </div>
+
+            <!-- Third Row -->
+            <div class="bg-amber-700 text-white p-2 rounded" *ngIf="cardDetail.archetype">
+              <div class="text-xs font-medium">Archetype</div>
+              <div class="text-sm font-bold">👥 {{ cardDetail.archetype }}</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">TCG Date</div>
+              <div class="text-sm font-bold">📅 2025-05-01</div>
+            </div>
+            <div class="bg-amber-700 text-white p-2 rounded">
+              <div class="text-xs font-medium">OCG Date</div>
+              <div class="text-sm font-bold">📅 2025-01-25</div>
+            </div>
           </div>
 
-          <!-- External Links -->
-          <div class="flex flex-wrap gap-2 mb-6 text-sm">
-            <a href="#" class="text-blue-600 hover:underline">🎮 TCGplayer</a>
-            <a href="#" class="text-blue-600 hover:underline">💰 Cardmarket</a>
-            <a href="#" class="text-blue-600 hover:underline">📖 Yugipedia</a>
-            <a href="#" class="text-blue-600 hover:underline">⭐ Card Rulings</a>
-            <a href="#" class="text-blue-600 hover:underline">🖼 Image (.jpg)</a>
-            <a href="#" class="text-blue-600 hover:underline">✂️ Image Cropped (.jpg)</a>
-            <a href="#" class="text-red-600 hover:underline">🚫 Report Bug</a>
+          <!-- Format Buttons -->
+          <div class="flex gap-2">
+            <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">TCG</button>
+            <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">OCG</button>
           </div>
         </div>
 
-        <!-- Card Stats Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <!-- First Row -->
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">Type</div>
-            <div class="text-lg font-bold">🎯 {{ cardDetail.type }}</div>
+        <!-- Bottom Section: Card Text -->
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-4 border border-blue-100">
+            <div class="flex items-center mb-3">
+              <div class="w-6 h-6 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+              </div>
+              <h2 class="text-lg font-bold text-gray-800">Card Text</h2>
+            </div>
+            <div class="bg-white rounded-lg p-3 shadow-sm border border-blue-100">
+              <p class="text-gray-700 leading-relaxed text-xs">{{ cardDetail.description }}</p>
+            </div>
           </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">Attribute</div>
-            <div class="text-lg font-bold">⚫ {{ cardDetail.attribute }}</div>
-          </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">Typing</div>
-            <div class="text-lg font-bold">🤖 {{ cardDetail.race }}</div>
-          </div>
-
-          <!-- Second Row -->
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">Level/Rank</div>
-            <div class="text-lg font-bold">⭐ {{ cardDetail.level }}</div>
-          </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">ATK</div>
-            <div class="text-lg font-bold">⚔️ {{ cardDetail.atk }}</div>
-          </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">DEF</div>
-            <div class="text-lg font-bold">🛡️ {{ cardDetail.def }}</div>
-          </div>
-
-          <!-- Third Row -->
-          <div class="bg-amber-700 text-white p-3 rounded" *ngIf="cardDetail.archetype">
-            <div class="text-sm font-medium">Archetype</div>
-            <div class="text-lg font-bold">👥 {{ cardDetail.archetype }}</div>
-          </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">TCG Date</div>
-            <div class="text-lg font-bold">📅 2025-05-01</div>
-          </div>
-          <div class="bg-amber-700 text-white p-3 rounded">
-            <div class="text-sm font-medium">OCG Date</div>
-            <div class="text-lg font-bold">📅 2025-01-25</div>
-          </div>
-        </div>
-
-        <!-- Format Buttons -->
-        <div class="flex gap-2">
-          <button class="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">TCG</button>
-          <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">OCG</button>
         </div>
       </div>
     </div>
   </div>
 
-    <!-- Card Text & Sets Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-      <!-- Card Text Section -->
-      <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 border border-blue-100">
-        <div class="flex items-center mb-4">
-          <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
-            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-            </svg>
-          </div>
-          <h2 class="text-2xl font-bold text-gray-800">Card Text</h2>
-        </div>
-        <div class="bg-white rounded-lg p-4 shadow-sm border border-blue-100">
-          <p class="text-gray-700 leading-relaxed text-sm">{{ cardDetail.description }}</p>
-        </div>
-      </div>
-
+    <!-- Card Sets Grid -->
+    <div class="mt-8">
       <!-- Card Sets Section -->
       <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl shadow-lg p-6 border border-blue-100" *ngIf="cardDetail.sets && cardDetail.sets.length > 0">
         <div class="flex items-center mb-4">
