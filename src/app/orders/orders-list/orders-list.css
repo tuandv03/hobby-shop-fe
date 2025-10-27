@@ -1,0 +1,87 @@
+/* Custom styles for orders list */
+
+.table-row-hover:hover {
+  background-color: rgb(248 250 252);
+}
+
+/* Alert animation */
+@keyframes pulse-warning {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.alert-icon {
+  animation: pulse-warning 2s infinite;
+}
+
+/* Action button hover effects */
+.action-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+}
+
+/* Status badge animations */
+.status-badge {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 1023px) {
+  .mobile-card {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(226 232 240);
+    border-radius: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .mobile-card:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Date picker styling */
+input[type="date"] {
+  color-scheme: light;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgb(71 85 105);
+  cursor: pointer;
+}
+
+/* Loading animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Table scroll shadows */
+.table-container {
+  background: 
+    linear-gradient(90deg, white 30%, rgba(255,255,255,0)),
+    linear-gradient(90deg, rgba(255,255,255,0), white 70%) 0 100%,
+    radial-gradient(farthest-side at 0 50%, rgba(0,0,0,.2), rgba(0,0,0,0)),
+    radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;
+  background-repeat: no-repeat;
+  background-color: white;
+  background-size: 40px 100%, 40px 100%, 14px 100%, 14px 100%;
+  background-position: 0 0, 100%, 0 0, 100%;
+  background-attachment: local, local, scroll, scroll;
+}

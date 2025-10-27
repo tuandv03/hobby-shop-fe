@@ -1,0 +1,81 @@
+/* Order detail specific styles */
+
+.back-button:hover {
+  transform: translateX(-2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+.action-button {
+  transition: all 0.2s ease-in-out;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Card hover effects */
+.card-link:hover {
+  text-decoration: underline;
+  transform: translateX(2px);
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Status badge styles */
+.status-badge {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Table styles */
+.table-row:hover {
+  background-color: rgb(248 250 252);
+  transition: background-color 0.2s ease-in-out;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 767px) {
+  .mobile-item-card {
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .mobile-item-card:hover {
+    background-color: rgb(248 250 252);
+  }
+}
+
+/* Gradient animation for rare cards */
+.bg-gradient-to-r {
+  background-size: 200% 200%;
+  animation: gradient 3s ease infinite;
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Currency formatting */
+.currency {
+  font-feature-settings: 'tnum';
+  font-variant-numeric: tabular-nums;
+}
+
+/* Loading animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* Info section styling */
+.info-card {
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.info-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
