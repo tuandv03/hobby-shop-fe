@@ -22,7 +22,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-15T08:30:00Z',
       customerId: 'CUS001',
       customerName: 'Nguyễn Văn A',
-      customerEmail: 'nguyenvana@email.com'
+        customerPhone: '0394213869'
     },
     {
       id: '2', 
@@ -35,7 +35,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-19T09:20:00Z',
       customerId: 'CUS002',
       customerName: 'Trần Thị B',
-      customerEmail: 'tranthib@email.com'
+        customerPhone: '0394213870'
     },
     {
       id: '3',
@@ -48,7 +48,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-21T10:30:00Z',
       customerId: 'CUS003',
       customerName: 'Lê Minh C',
-      customerEmail: 'leminhc@email.com'
+        customerPhone: '0394213866'
     },
     {
       id: '4',
@@ -61,7 +61,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-10T11:20:00Z',
       customerId: 'CUS004',
       customerName: 'Phạm Thị D',
-      customerEmail: 'phamthid@email.com'
+        customerPhone: '0394213866'
     },
     {
       id: '5',
@@ -74,7 +74,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-22T15:45:00Z',
       customerId: 'CUS005',
       customerName: 'Hoàng Văn E',
-      customerEmail: 'hoangvane@email.com'
+        customerPhone: '0394213867'
     },
     {
       id: '6',
@@ -98,7 +98,7 @@ export class OrderService extends BaseService {
       updatedAt: '2024-10-08T16:00:00Z',
       customerId: 'CUS007',
       customerName: 'Đặng Thị F',
-      customerEmail: 'dangthif@email.com'
+        customerPhone: '0394213868'
     }
   ];
 
@@ -108,30 +108,27 @@ export class OrderService extends BaseService {
       items: [
         {
           id: 'item1',
-          cardId: 1001,
+          setCode: 'LOB-001',
           cardName: 'Blue-Eyes White Dragon',
           quantity: 3,
           price: 500000,
-          rarity: 'Ultra Rare',
-          setCode: 'LOB-001'
+          rarity: 'Ultra Rare'
         },
         {
           id: 'item2',
-          cardId: 1002,
+          setCode: 'SDY-006',
           cardName: 'Dark Magician',
           quantity: 2,
           price: 750000,
-          rarity: 'Secret Rare',
-          setCode: 'SDY-006'
+          rarity: 'Secret Rare'
         },
         {
           id: 'item3',
-          cardId: 1003,
+          setCode: 'LOB-070',
           cardName: 'Red-Eyes Black Dragon',
           quantity: 1,
           price: 400000,
-          rarity: 'Super Rare',
-          setCode: 'LOB-070'
+          rarity: 'Super Rare'
         }
       ],
       shippingAddress: '123 Đường ABC, Quận 1, TP.HCM',
@@ -142,12 +139,11 @@ export class OrderService extends BaseService {
       items: [
         {
           id: 'item4',
-          cardId: 1004,
+          setCode: 'LOB-124',
           cardName: 'Exodia the Forbidden One',
           quantity: 1,
           price: 1200000,
-          rarity: 'Secret Rare',
-          setCode: 'LOB-124'
+          rarity: 'Secret Rare'
         }
       ],
       shippingAddress: '456 Đường XYZ, Quận 3, TP.HCM',
@@ -156,11 +152,20 @@ export class OrderService extends BaseService {
   };
 
   getOrders(request?: OrderListRequest): Observable<Order[]> {
-    // Simulate API delay
-    return of(this.mockOrders).pipe(delay(800));
+    // Call real backend API
+    const params = this.buildOrderParams(request);
+    return this.get<Order[]>('orders', params);
+    
+    // Fallback to mock data for testing (can be removed later)
+    // return of(this.mockOrders).pipe(delay(800));
   }
 
   getOrderById(id: string): Observable<OrderDetail> {
+    // Call real backend API
+    return this.get<OrderDetail>(`orders/${id}`);
+    
+    // Fallback to mock data for testing (can be removed later)
+    /*
     const orderDetail = this.mockOrderDetails[id];
     if (orderDetail) {
       return of(orderDetail).pipe(delay(500));
@@ -185,9 +190,15 @@ export class OrderService extends BaseService {
       }
     }
     throw new Error('Order not found');
+    */
   }
 
   updateOrderStatus(id: string, status: string): Observable<Order> {
+    // Call real backend API
+    return this.put<Order>(`orders/${id}/status`, { status });
+    
+    // Fallback to mock data for testing (can be removed later)
+    /*
     const order = this.mockOrders.find(o => o.id === id);
     if (order) {
       order.status = status as any;
@@ -195,63 +206,26 @@ export class OrderService extends BaseService {
       return of(order).pipe(delay(300));
     }
     throw new Error('Order not found');
+    */
   }
 
   deleteOrder(id: string): Observable<void> {
+    // Call real backend API
+    return this.delete<void>(`orders/${id}`);
+    
+    // Fallback to mock data for testing (can be removed later)
+    /*
     const index = this.mockOrders.findIndex(o => o.id === id);
     if (index !== -1) {
       this.mockOrders.splice(index, 1);
       return of(void 0).pipe(delay(300));
     }
     throw new Error('Order not found');
+    */
   }
 
   markOrderAsDone(id: string): Observable<Order> {
     return this.updateOrderStatus(id, 'completed');
-  }
-
-  createOrder(request: CreateOrderRequest): Observable<Order> {
-    // Generate new mock order
-    const newOrder: Order = {
-      id: String(this.mockOrders.length + 1),
-      orderCode: `ORD-2024-${String(this.mockOrders.length + 1).padStart(3, '0')}`,
-      cardCount: request.items.reduce((sum, item) => sum + item.quantity, 0),
-      totalAmount: request.items.reduce((sum, item) => sum + (item.quantity * item.price), 0),
-      status: request.isPaid ? 'processing' : 'pending',
-      notes: request.notes,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      customerId: `CUS${String(this.mockOrders.length + 1).padStart(3, '0')}`,
-      customerName: request.customerName,
-      customerEmail: request.customerEmail
-    };
-
-    // Add to mock data
-    this.mockOrders.unshift(newOrder);
-
-    // Create detail entry
-    const newOrderDetail: OrderDetail = {
-      ...newOrder,
-      items: request.items.map((item, index) => ({
-        id: `item_${newOrder.id}_${index}`,
-        ...item
-      })),
-      shippingAddress: request.shippingAddress,
-      paymentMethod: this.getPaymentMethodLabel(request.paymentMethod)
-    };
-    
-    this.mockOrderDetails[newOrder.id] = newOrderDetail;
-
-    return of(newOrder).pipe(delay(1000));
-  }
-
-  private getPaymentMethodLabel(method: string): string {
-    switch (method) {
-      case 'cash': return 'Tiền mặt';
-      case 'bank_transfer': return 'Chuyển khoản';
-      case 'card': return 'Thẻ tín dụng';
-      default: return method;
-    }
   }
 
   private buildOrderParams(request?: OrderListRequest): any {
@@ -275,5 +249,55 @@ export class OrderService extends BaseService {
       page: request.page || 1,
       limit: request.limit || 50
     };
+  }
+
+  createOrder(request: CreateOrderRequest): Observable<Order> {
+    // Call real backend API
+    return this.post<Order>('orders', request);
+    
+    // Original mock code (commented out):
+    /*
+    // Generate new mock order
+    const newOrder: Order = {
+      id: String(this.mockOrders.length + 1),
+      orderCode: `ORD-2024-${String(this.mockOrders.length + 1).padStart(3, '0')}`,
+      cardCount: request.items.reduce((sum, item) => sum + item.quantity, 0),
+      totalAmount: request.items.reduce((sum, item) => sum + (item.quantity * item.price), 0),
+      status: request.isPaid ? 'processing' : 'pending',
+      notes: request.notes,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      customerId: `CUS${String(this.mockOrders.length + 1).padStart(3, '0')}`,
+      customerName: request.customerName,
+        customerPhone: request.  customerPhone
+    };
+
+    // Add to mock data
+    this.mockOrders.unshift(newOrder);
+
+    // Create detail entry
+    const newOrderDetail: OrderDetail = {
+      ...newOrder,
+      items: request.items.map((item, index) => ({
+        id: `item_${newOrder.id}_${index}`,
+        ...item
+      })),
+      shippingAddress: request.shippingAddress,
+      paymentMethod: this.getPaymentMethodLabel(request.paymentMethod)
+    };
+    
+    this.mockOrderDetails[newOrder.id] = newOrderDetail;
+
+    return of(newOrder).pipe(delay(1000));
+    */
+  }
+
+  private getPaymentMethodLabel(method: string): string {
+    switch (method) {
+      case 'cash': return 'Tiền mặt';
+      case 'bank_transfer': return 'Chuyển khoản';
+      case 'card': return 'Thẻ tín dụng';
+      default: return method;
+    }
   }
 }

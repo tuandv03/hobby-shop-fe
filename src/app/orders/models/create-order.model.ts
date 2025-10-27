@@ -1,7 +1,6 @@
 export interface CreateOrderRequest {
   customerName: string;
-  customerEmail?: string;
-  customerPhone?: string;
+  customerPhone: string;
   shippingAddress?: string;
   paymentMethod: 'cash' | 'bank_transfer' | 'card';
   isPaid: boolean;
@@ -10,10 +9,9 @@ export interface CreateOrderRequest {
 }
 
 export interface CreateOrderItem {
-  cardId: number;
+  setCode: string;
   cardName: string;
   quantity: number;
   price: number;
   rarity?: string;
-  setCode?: string;
 }

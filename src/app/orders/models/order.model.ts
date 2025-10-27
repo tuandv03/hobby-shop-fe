@@ -10,6 +10,7 @@ export interface Order {
   customerId?: string;
   customerName?: string;
   customerEmail?: string;
+  customerPhone?: string;
 }
 
 export interface OrderDetail extends Order {
@@ -20,12 +21,11 @@ export interface OrderDetail extends Order {
 
 export interface OrderItem {
   id: string;
-  cardId: number;
+  setCode: string;
   cardName: string;
   quantity: number;
   price: number;
   rarity?: string;
-  setCode?: string;
 }
 
 export interface OrderListRequest {

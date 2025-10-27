@@ -18,8 +18,8 @@ export class OrderCreateComponent implements OnInit {
 
   paymentMethods = [
     { value: 'cash', label: 'Tiền mặt' },
-    { value: 'bank_transfer', label: 'Chuyển khoản' },
-    { value: 'card', label: 'Thẻ tín dụng' }
+    { value: 'bank_transfer', label: 'Chuyển khoản ngân hàng' },
+    { value: 'card', label: 'Thẻ tín dụng/ghi nợ' }
   ];
 
   constructor(
@@ -38,8 +38,7 @@ export class OrderCreateComponent implements OnInit {
   private createForm(): FormGroup {
     return this.fb.group({
       customerName: ['', [Validators.required, Validators.minLength(2)]],
-      customerEmail: ['', [Validators.email]],
-      customerPhone: ['', [Validators.pattern(/^[0-9]{10,11}$/)]],
+      customerPhone: ['', [Validators.required]],
       shippingAddress: [''],
       paymentMethod: ['cash', Validators.required],
       isPaid: [false],
@@ -54,12 +53,11 @@ export class OrderCreateComponent implements OnInit {
 
   private createItemForm(): FormGroup {
     return this.fb.group({
-      cardId: ['', Validators.required],
+      setCode: ['', [Validators.required, Validators.minLength(2)]],
       cardName: ['', [Validators.required, Validators.minLength(2)]],
       quantity: [1, [Validators.required, Validators.min(1)]],
       price: [0, [Validators.required, Validators.min(0)]],
-      rarity: [''],
-      setCode: ['']
+      rarity: ['']
     });
   }
 
@@ -97,16 +95,34 @@ export class OrderCreateComponent implements OnInit {
     return count;
   }
 
+  private validatePhoneNumber(phone: string): boolean {
+    if (!phone) return false; // Phone is must have
+    
+    // Remove all spaces, dashes, and dots
+    const cleanPhone = phone.replace(/[\s\-\.]/g, '');
+    
+    // Vietnamese phone number patterns:
+    // Mobile: 03x, 05x, 07x, 08x, 09x (10 digits total)
+    // Landline: 02x (10-11 digits total)
+    const vietnamesePhonePattern = /^(0[3|5|7|8|9][0-9]{8}|02[0-9]{8,9})$/;
+    
+    return vietnamesePhonePattern.test(cleanPhone);
+  }
+
   onSubmit() {
     if (this.orderForm.valid && this.itemsFormArray.length > 0) {
+      // Additional phone number validation
+      const formValue = this.orderForm.value;
+      if (formValue.customerPhone && !this.validatePhoneNumber(formValue.customerPhone)) {
+        this.error = 'Số điện thoại không hợp lệ. Vui lòng nhập số điện thoại Việt Nam (10-11 chữ số).';
+        return;
+      }
+
       this.loading = true;
       this.error = null;
-
-      const formValue = this.orderForm.value;
       const createRequest: CreateOrderRequest = {
         customerName: formValue.customerName,
-        customerEmail: formValue.customerEmail || undefined,
-        customerPhone: formValue.customerPhone || undefined,
+        customerPhone: formValue.customerPhone,
         shippingAddress: formValue.shippingAddress || undefined,
         paymentMethod: formValue.paymentMethod,
         isPaid: formValue.isPaid,
@@ -119,15 +135,15 @@ export class OrderCreateComponent implements OnInit {
           console.log('Order created successfully:', order);
           this.router.navigate(['/orders', order.id]);
         },
-        error: (err) => {
-          this.error = 'Failed to create order. Please try again.';
+        error: (err: any) => {
+          this.error = 'Không thể tạo đơn hàng. Vui lòng thử lại.';
           this.loading = false;
           console.error('Error creating order:', err);
         }
       });
     } else {
       this.markFormGroupTouched();
-      this.error = 'Please fill in all required fields correctly.';
+      this.error = 'Vui lòng điền đầy đủ và chính xác các thông tin bắt buộc.';
     }
   }
 
@@ -159,10 +175,9 @@ export class OrderCreateComponent implements OnInit {
   getFieldError(fieldName: string): string {
     const field = this.orderForm.get(fieldName);
     if (field?.errors) {
-      if (field.errors['required']) return `${fieldName} is required`;
-      if (field.errors['email']) return 'Please enter a valid email';
-      if (field.errors['minlength']) return `${fieldName} is too short`;
-      if (field.errors['pattern']) return 'Please enter a valid phone number';
+      if (field.errors['required']) return `${this.getVietnameseFieldName(fieldName)} là bắt buộc`;
+      if (field.errors['minlength']) return `${this.getVietnameseFieldName(fieldName)} quá ngắn`;
+      if (field.errors['pattern']) return 'Vui lòng nhập số điện thoại Việt Nam hợp lệ (bắt đầu bằng 03, 05, 07, 08, 09 hoặc 02)';
     }
     return '';
   }
@@ -170,11 +185,30 @@ export class OrderCreateComponent implements OnInit {
   getItemFieldError(index: number, fieldName: string): string {
     const field = this.itemsFormArray.at(index).get(fieldName);
     if (field?.errors) {
-      if (field.errors['required']) return `${fieldName} is required`;
-      if (field.errors['min']) return `${fieldName} must be greater than 0`;
-      if (field.errors['minlength']) return `${fieldName} is too short`;
+      if (field.errors['required']) return `${this.getVietnameseItemFieldName(fieldName)} là bắt buộc`;
+      if (field.errors['min']) return `${this.getVietnameseItemFieldName(fieldName)} phải lớn hơn 0`;
+      if (field.errors['minlength']) return `${this.getVietnameseItemFieldName(fieldName)} quá ngắn`;
     }
     return '';
+  }
+
+  private getVietnameseFieldName(fieldName: string): string {
+    const fieldNames: { [key: string]: string } = {
+      'customerName': 'Tên khách hàng',
+      'customerPhone': 'Số điện thoại',
+      'paymentMethod': 'Phương thức thanh toán'
+    };
+    return fieldNames[fieldName] || fieldName;
+  }
+
+  private getVietnameseItemFieldName(fieldName: string): string {
+    const fieldNames: { [key: string]: string } = {
+      'setCode': 'Mã bộ thẻ',
+      'cardName': 'Tên thẻ',
+      'quantity': 'Số lượng',
+      'price': 'Giá'
+    };
+    return fieldNames[fieldName] || fieldName;
   }
 
   formatCurrency(amount: number): string {

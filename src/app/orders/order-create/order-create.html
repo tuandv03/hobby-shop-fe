@@ -3,8 +3,8 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-8">
       <div>
-        <h1 class="text-3xl font-bold text-slate-800">Create New Order</h1>
-        <p class="text-slate-600">Fill in the order details and items</p>
+        <h1 class="text-3xl font-bold text-slate-800">Tạo Đơn Hàng Mới</h1>
+        <p class="text-slate-600">Điền thông tin đơn hàng và các sản phẩm</p>
       </div>
       <button 
         (click)="cancel()"
@@ -12,7 +12,7 @@
         <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
         </svg>
-        Back to Orders
+        Quay Lại Danh Sách
       </button>
     </div>
 
@@ -25,7 +25,7 @@
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-red-800">Error</h3>
+          <h3 class="text-sm font-medium text-red-800">Lỗi</h3>
           <div class="mt-2 text-sm text-red-700">{{ error }}</div>
         </div>
       </div>
@@ -34,13 +34,13 @@
     <form [formGroup]="orderForm" (ngSubmit)="onSubmit()" class="space-y-8">
       <!-- Customer Information -->
       <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
-        <h2 class="text-lg font-semibold text-slate-800 mb-6">Customer Information</h2>
+        <h2 class="text-lg font-semibold text-slate-800 mb-6">Thông Tin Khách Hàng</h2>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Customer Name -->
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-2">
-              Customer Name <span class="text-red-500">*</span>
+              Tên Khách Hàng <span class="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -48,39 +48,25 @@
               class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
               [class.border-red-300]="isFieldInvalid('customerName')"
               [class.border-slate-300]="!isFieldInvalid('customerName')"
-              placeholder="Enter customer name"
+              placeholder="Nhập tên khách hàng"
             />
             <p *ngIf="isFieldInvalid('customerName')" class="mt-1 text-sm text-red-600">
               {{ getFieldError('customerName') }}
             </p>
           </div>
 
-          <!-- Customer Email -->
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-2">Customer Email</label>
-            <input
-              type="email"
-              formControlName="customerEmail"
-              class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-              [class.border-red-300]="isFieldInvalid('customerEmail')"
-              [class.border-slate-300]="!isFieldInvalid('customerEmail')"
-              placeholder="Enter email address"
-            />
-            <p *ngIf="isFieldInvalid('customerEmail')" class="mt-1 text-sm text-red-600">
-              {{ getFieldError('customerEmail') }}
-            </p>
-          </div>
-
           <!-- Customer Phone -->
           <div>
-            <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+            <label class="block text-sm font-medium text-slate-700 mb-2">
+              Số Điện Thoại <span class="text-red-500">*</span>
+            </label>
             <input
               type="tel"
               formControlName="customerPhone"
               class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
               [class.border-red-300]="isFieldInvalid('customerPhone')"
               [class.border-slate-300]="!isFieldInvalid('customerPhone')"
-              placeholder="Enter phone number"
+              placeholder="Nhập số điện thoại (VD: 0987654321)"
             />
             <p *ngIf="isFieldInvalid('customerPhone')" class="mt-1 text-sm text-red-600">
               {{ getFieldError('customerPhone') }}
@@ -90,7 +76,7 @@
           <!-- Payment Method -->
           <div>
             <label class="block text-sm font-medium text-slate-700 mb-2">
-              Payment Method <span class="text-red-500">*</span>
+              Phương Thức Thanh Toán <span class="text-red-500">*</span>
             </label>
             <select
               formControlName="paymentMethod"
@@ -104,12 +90,12 @@
 
         <!-- Shipping Address -->
         <div class="mt-6">
-          <label class="block text-sm font-medium text-slate-700 mb-2">Shipping Address</label>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Địa Chỉ Giao Hàng</label>
           <textarea
             formControlName="shippingAddress"
             rows="3"
             class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
-            placeholder="Enter shipping address"
+            placeholder="Nhập địa chỉ giao hàng"
           ></textarea>
         </div>
 
@@ -122,22 +108,22 @@
               class="rounded border-slate-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
             />
             <span class="ml-2 text-sm font-medium text-slate-700">
-              ✅ Payment received (Customer has transferred money)
+              ✅ Đã nhận thanh toán (Khách hàng đã chuyển tiền)
             </span>
           </label>
           <p class="mt-1 text-xs text-slate-500">
-            Check this if the customer has already made the payment
+            Tích vào đây nếu khách hàng đã thanh toán
           </p>
         </div>
 
         <!-- Notes -->
         <div class="mt-6">
-          <label class="block text-sm font-medium text-slate-700 mb-2">Notes</label>
+          <label class="block text-sm font-medium text-slate-700 mb-2">Ghi Chú</label>
           <textarea
             formControlName="notes"
             rows="3"
             class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors resize-none"
-            placeholder="Additional notes or special instructions"
+            placeholder="Ghi chú bổ sung hoặc yêu cầu đặc biệt"
           ></textarea>
         </div>
       </div>
@@ -145,7 +131,7 @@
       <!-- Order Items -->
       <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-semibold text-slate-800">Order Items</h2>
+          <h2 class="text-lg font-semibold text-slate-800">Sản Phẩm Trong Đơn</h2>
           <button
             type="button"
             (click)="addOrderItem()"
@@ -153,7 +139,7 @@
             <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
             </svg>
-            Add Item
+            Thêm Sản Phẩm
           </button>
         </div>
 
@@ -174,28 +160,28 @@
             </button>
 
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              <!-- Card ID -->
+              <!-- Set Code -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">
-                  Card ID <span class="text-red-500">*</span>
+                  Mã Bộ Thẻ <span class="text-red-500">*</span>
                 </label>
                 <input
-                  type="number"
-                  formControlName="cardId"
+                  type="text"
+                  formControlName="setCode"
                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                  [class.border-red-300]="isItemFieldInvalid(i, 'cardId')"
-                  [class.border-slate-300]="!isItemFieldInvalid(i, 'cardId')"
-                  placeholder="Card ID"
+                  [class.border-red-300]="isItemFieldInvalid(i, 'setCode')"
+                  [class.border-slate-300]="!isItemFieldInvalid(i, 'setCode')"
+                  placeholder="VD: LOB-EN001"
                 />
-                <p *ngIf="isItemFieldInvalid(i, 'cardId')" class="mt-1 text-xs text-red-600">
-                  {{ getItemFieldError(i, 'cardId') }}
+                <p *ngIf="isItemFieldInvalid(i, 'setCode')" class="mt-1 text-xs text-red-600">
+                  {{ getItemFieldError(i, 'setCode') }}
                 </p>
               </div>
 
               <!-- Card Name -->
               <div class="md:col-span-2">
                 <label class="block text-sm font-medium text-slate-700 mb-2">
-                  Card Name <span class="text-red-500">*</span>
+                  Tên Thẻ <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -203,7 +189,7 @@
                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                   [class.border-red-300]="isItemFieldInvalid(i, 'cardName')"
                   [class.border-slate-300]="!isItemFieldInvalid(i, 'cardName')"
-                  placeholder="Enter card name"
+                  placeholder="Nhập tên thẻ"
                 />
                 <p *ngIf="isItemFieldInvalid(i, 'cardName')" class="mt-1 text-xs text-red-600">
                   {{ getItemFieldError(i, 'cardName') }}
@@ -213,7 +199,7 @@
               <!-- Quantity -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">
-                  Quantity <span class="text-red-500">*</span>
+                  Số Lượng <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -222,7 +208,7 @@
                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                   [class.border-red-300]="isItemFieldInvalid(i, 'quantity')"
                   [class.border-slate-300]="!isItemFieldInvalid(i, 'quantity')"
-                  placeholder="Qty"
+                  placeholder="SL"
                 />
                 <p *ngIf="isItemFieldInvalid(i, 'quantity')" class="mt-1 text-xs text-red-600">
                   {{ getItemFieldError(i, 'quantity') }}
@@ -232,7 +218,7 @@
               <!-- Price -->
               <div>
                 <label class="block text-sm font-medium text-slate-700 mb-2">
-                  Price (VNĐ) <span class="text-red-500">*</span>
+                  Giá (VNĐ) <span class="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -241,7 +227,7 @@
                   class="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
                   [class.border-red-300]="isItemFieldInvalid(i, 'price')"
                   [class.border-slate-300]="!isItemFieldInvalid(i, 'price')"
-                  placeholder="Price"
+                  placeholder="Giá"
                 />
                 <p *ngIf="isItemFieldInvalid(i, 'price')" class="mt-1 text-xs text-red-600">
                   {{ getItemFieldError(i, 'price') }}
@@ -250,7 +236,7 @@
 
               <!-- Total -->
               <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">Total</label>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Thành Tiền</label>
                 <div class="px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm font-medium text-slate-900">
                   {{ formatCurrency(calculateItemTotal(i)) }}
                 </div>
@@ -259,29 +245,18 @@
 
             <!-- Additional Fields Row -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <!-- Set Code -->
-              <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">Set Code</label>
-                <input
-                  type="text"
-                  formControlName="setCode"
-                  class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors"
-                  placeholder="e.g., LOB-001"
-                />
-              </div>
-
               <!-- Rarity -->
               <div>
-                <label class="block text-sm font-medium text-slate-700 mb-2">Rarity</label>
+                <label class="block text-sm font-medium text-slate-700 mb-2">Độ Hiếm</label>
                 <select
                   formControlName="rarity"
                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-colors">
-                  <option value="">Select rarity</option>
-                  <option value="Common">Common</option>
-                  <option value="Rare">Rare</option>
-                  <option value="Super Rare">Super Rare</option>
-                  <option value="Ultra Rare">Ultra Rare</option>
-                  <option value="Secret Rare">Secret Rare</option>
+                  <option value="">Chọn độ hiếm</option>
+                  <option value="Common">Common (Thường)</option>
+                  <option value="Rare">Rare (Hiếm)</option>
+                  <option value="Super Rare">Super Rare (Siêu hiếm)</option>
+                  <option value="Ultra Rare">Ultra Rare (Cực hiếm)</option>
+                  <option value="Secret Rare">Secret Rare (Bí mật)</option>
                 </select>
               </div>
             </div>
@@ -292,19 +267,19 @@
         <div class="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200">
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
             <div>
-              <div class="text-sm text-slate-600">Total Items</div>
-              <div class="text-lg font-semibold text-slate-900">{{ getTotalCardCount() }} cards</div>
+              <div class="text-sm text-slate-600">Tổng Số Lượng</div>
+              <div class="text-lg font-semibold text-slate-900">{{ getTotalCardCount() }} thẻ</div>
             </div>
             <div>
-              <div class="text-sm text-slate-600">Payment Status</div>
+              <div class="text-sm text-slate-600">Trạng Thái Thanh Toán</div>
               <div class="text-lg font-semibold" 
                    [class.text-green-600]="orderForm.get('isPaid')?.value"
                    [class.text-yellow-600]="!orderForm.get('isPaid')?.value">
-                {{ orderForm.get('isPaid')?.value ? 'Paid' : 'Pending' }}
+                {{ orderForm.get('isPaid')?.value ? 'Đã Thanh Toán' : 'Chờ Thanh Toán' }}
               </div>
             </div>
             <div>
-              <div class="text-sm text-slate-600">Grand Total</div>
+              <div class="text-sm text-slate-600">Tổng Cộng</div>
               <div class="text-xl font-bold text-slate-900">{{ formatCurrency(calculateGrandTotal()) }}</div>
             </div>
           </div>
@@ -317,19 +292,19 @@
           type="button"
           (click)="cancel()"
           class="px-6 py-3 border border-slate-300 text-slate-700 font-medium rounded-lg hover:bg-slate-50 transition-colors">
-          Cancel
+          Hủy
         </button>
         <button
           type="submit"
           [disabled]="loading || orderForm.invalid || itemsFormArray.length === 0"
           class="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-medium rounded-lg transition-colors flex items-center">
-          <span *ngIf="!loading">Create Order</span>
+          <span *ngIf="!loading">Tạo Đơn Hàng</span>
           <span *ngIf="loading" class="flex items-center">
             <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            Creating...
+            Đang Tạo...
           </span>
         </button>
       </div>
