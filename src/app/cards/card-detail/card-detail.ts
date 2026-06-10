@@ -1,15 +1,18 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ButtonModule } from 'primeng/button';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
 import { CardDetail } from '../models/card-detail.model';
 import { CardImage } from '../../shared/models/card.model';
 import { CardsService } from '../card.service';
 
 @Component({
   selector: 'app-card-detail',
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule, SkeletonModule, TagModule],
   templateUrl: './card-detail.html',
-  styleUrl: './card-detail.css'
+  styleUrl: './card-detail.scss'
 })
 export class CardDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);

@@ -161,7 +161,7 @@
               <tr *ngFor="let item of order.items" class="hover:bg-slate-50">
                 <td class="px-6 py-4">
                   <div class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer"
-                       [routerLink]="['/cards', item.cardId]">
+                       [routerLink]="['/cards', item.id]">
                     {{ item.cardName }}
                   </div>
                 </td>
@@ -215,7 +215,7 @@
                [class.border-slate-200]="!last">
             <div class="flex justify-between items-start mb-2">
               <div class="text-sm font-medium text-blue-600 hover:text-blue-800 cursor-pointer flex-1"
-                   [routerLink]="['/cards', item.cardId]">
+                   [routerLink]="['/cards', item.id]">
                 {{ item.cardName }}
               </div>
               <span class="text-sm font-bold text-slate-900 ml-2">

@@ -1,21 +1,32 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { Router, RouterModule } from "@angular/router";
+import { RouterModule } from "@angular/router";
+import { ButtonModule } from "primeng/button";
+import { PaginatorModule, PaginatorState } from "primeng/paginator";
+import { SkeletonModule } from "primeng/skeleton";
+import { TagModule } from "primeng/tag";
 import { YugiohApiService, YgoCard } from "../../core/yugioh-api.service";
 import { CartService } from "../cart.service";
 
 @Component({
   standalone: true,
   selector: "app-cards-list",
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    ButtonModule,
+    PaginatorModule,
+    SkeletonModule,
+    TagModule,
+  ],
   templateUrl: "./cards-list.html",
-  styleUrls: ["./cards-list.css"],
+  styleUrl: "./cards-list.scss",
 })
 export class CardsListComponent implements OnInit {
   private api = inject(YugiohApiService);
   private cart = inject(CartService);
-  private router = inject(Router);
 
   name = "";
   code = "";
@@ -23,6 +34,12 @@ export class CardsListComponent implements OnInit {
   rarity = "";
   cards: YgoCard[] = [];
   loading = false;
+  showFilters = true;
+  first = 0;
+  pageSize = 24;
+  totalRecords = 0;
+  readonly pageSizeOptions = [24, 48, 96];
+  readonly skeletonItems = Array.from({ length: 6 }, (_, i) => i);
   private wishlist = new Set<number>();
   rarities: string[] = [
     "Common",
@@ -30,33 +47,51 @@ export class CardsListComponent implements OnInit {
     "Super Rare",
     "Ultra Rare",
     "Starlight Rare",
-    "Quarter Century Rare"
+    "Quarter Century Rare",
   ];
 
   ngOnInit(): void {
     this.search();
   }
 
-  search() {
+  search(resetPage = true) {
+    if (resetPage) {
+      this.first = 0;
+    }
+
     this.loading = true;
     this.api
-      .searchCards({
+      .searchCardsPage({
         name: this.name || undefined,
         code: this.code || undefined,
         type: this.type || undefined,
-        num: 48,
-        offset: 0,
+        num: this.pageSize,
+        offset: this.first,
       })
       .subscribe({
-        next: (cards) => {
-          this.cards = this.applyRarity(cards);
+        next: (result) => {
+          this.cards = this.applyRarity(result.data);
+          this.totalRecords =
+            result.meta?.total_rows ??
+            this.first + this.cards.length + (result.meta?.rows_remaining ?? 0);
           this.loading = false;
         },
         error: () => {
           this.cards = [];
+          this.totalRecords = 0;
           this.loading = false;
         },
       });
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
+  }
+
+  onPageChange(event: PaginatorState) {
+    this.first = event.first ?? 0;
+    this.pageSize = event.rows ?? this.pageSize;
+    this.search(false);
   }
 
   private applyRarity(cards: YgoCard[]): YgoCard[] {
@@ -86,10 +121,5 @@ export class CardsListComponent implements OnInit {
 
   isWished(id: number) {
     return this.wishlist.has(id);
-  }
-
-  onCardClick(id: number) {
-    console.log('Card clicked:', id);
-    console.log('Navigating to:', `/cards/${id}`);
   }
 }

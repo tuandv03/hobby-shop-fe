@@ -1,0 +1,200 @@
+<section class="set-browser-page">
+  <div class="container-xxl page-container">
+    <section class="collection-hero">
+      <div class="collection-copy">
+        <div class="eyebrow">Yu-Gi-Oh! Set Collection</div>
+        <h1>{{ selectedSet?.set_name || 'Danh sách set' }}</h1>
+        <p>
+          Chọn set để xem danh sách card, rarity và các phiên bản in trong bộ sưu tập.
+        </p>
+      </div>
+
+      <div *ngIf="selectedSet" class="hero-stats" aria-label="Thông tin set">
+        <p-tag [value]="selectedSet.set_code" severity="secondary"></p-tag>
+        <p-tag [value]="selectedSet.num_of_cards + ' cards'" severity="info"></p-tag>
+        <p-tag
+          *ngIf="selectedSet.tcg_date"
+          [value]="selectedSet.tcg_date"
+          severity="contrast"
+        ></p-tag>
+      </div>
+    </section>
+
+    <section class="browser-toolbar" aria-label="Bộ lọc danh sách set">
+      <div class="row g-3 align-items-end">
+        <div class="col-12 col-lg">
+          <label for="selectedSetCode" class="form-label">Set</label>
+          <p-select
+            inputId="selectedSetCode"
+            name="selectedSetCode"
+            [(ngModel)]="selectedSetCode"
+            [options]="sets"
+            optionLabel="set_name"
+            optionValue="set_code"
+            [disabled]="loadingSets"
+            [filter]="true"
+            filterBy="set_code,set_name"
+            placeholder="Chọn set"
+            styleClass="w-100"
+            (onChange)="onSetChange()"
+          >
+            <ng-template pTemplate="selectedItem" let-set>
+              <span *ngIf="set">{{ set.set_code }} - {{ set.set_name }}</span>
+            </ng-template>
+            <ng-template pTemplate="item" let-set>
+              <span>{{ set.set_code }} - {{ set.set_name }}</span>
+            </ng-template>
+          </p-select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-2">
+          <label for="sortBy" class="form-label">Sắp xếp</label>
+          <p-select
+            inputId="sortBy"
+            name="sortBy"
+            [(ngModel)]="sortBy"
+            [options]="sortOptions"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-100"
+            (onChange)="onSortChange()"
+          ></p-select>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-auto">
+          <label class="form-label">Hiển thị</label>
+          <p-selectButton
+            name="viewMode"
+            [(ngModel)]="viewMode"
+            [options]="viewModeOptions"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="view-mode-toggle"
+            (onChange)="setViewMode($event.value)"
+          ></p-selectButton>
+        </div>
+      </div>
+    </section>
+
+    <div *ngIf="loadingSets || loadingCards" class="product-grid" aria-busy="true">
+      <article *ngFor="let item of [1, 2, 3, 4, 5, 6]" class="product-card loading-card">
+        <p-skeleton width="100%" height="100%" styleClass="image-skeleton"></p-skeleton>
+        <div class="product-info">
+          <p-skeleton width="65%" height="0.875rem"></p-skeleton>
+          <p-skeleton width="100%" height="1rem"></p-skeleton>
+          <p-skeleton width="45%" height="1rem"></p-skeleton>
+        </div>
+      </article>
+    </div>
+
+    <div *ngIf="error && !loadingSets && !loadingCards" class="alert alert-danger">
+      {{ error }}
+    </div>
+
+    <ng-container *ngIf="!loadingSets && !loadingCards && !error">
+      <div *ngIf="viewMode === 'grid'" class="product-grid">
+        <a
+          *ngFor="let card of pagedCards"
+          class="product-card"
+          [routerLink]="['/cards', card.card_id]"
+        >
+          <div class="product-image-wrap">
+            <img
+              [src]="card.image_url_small || '/assets/card-placeholder.jpg'"
+              [alt]="card.card_name"
+              loading="lazy"
+            />
+          </div>
+
+          <div class="product-info">
+            <div class="product-meta">
+              <span class="set-code">{{ card.set_code }}</span>
+              <span class="rarity-pill" [title]="card.set_rarity">
+                {{ card.set_rarity || 'Unknown' }}
+              </span>
+            </div>
+
+            <h2 [title]="card.card_name">{{ card.card_name }}</h2>
+
+            <div class="product-footer">
+              <span *ngIf="card.set_price; else noPrice" class="price">
+                {{ card.set_price }}
+              </span>
+              <ng-template #noPrice>
+                <span class="price muted">Chưa có giá</span>
+              </ng-template>
+              <i class="pi pi-arrow-right" aria-hidden="true"></i>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <p-table
+        *ngIf="viewMode === 'table'"
+        [value]="pagedCards"
+        styleClass="p-datatable-sm set-table"
+        responsiveLayout="scroll"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Code theo set</th>
+            <th>Name</th>
+            <th>Rarity</th>
+            <th>Giá</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-card>
+          <tr
+            tabindex="0"
+            class="clickable-row"
+            (click)="openCard(card.card_id)"
+            (keyup.enter)="openCard(card.card_id)"
+          >
+            <td class="set-code-cell">{{ card.set_code }}</td>
+            <td>{{ card.card_name }}</td>
+            <td>{{ card.set_rarity || 'Unknown' }}</td>
+            <td class="price-cell">{{ card.set_price || '-' }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <div *ngIf="cards.length > pageSize" class="pagination-bar">
+        <p>
+          Hiển thị {{ pageStart }}-{{ pageEnd }} / {{ cards.length }} card
+        </p>
+
+        <div class="pagination-actions">
+          <button
+            pButton
+            type="button"
+            label="Trước"
+            icon="pi pi-chevron-left"
+            severity="secondary"
+            [outlined]="true"
+            [disabled]="currentPage === 1"
+            (click)="goToPage(currentPage - 1)"
+          ></button>
+
+          <span class="page-status">Trang {{ currentPage }} / {{ totalPages }}</span>
+
+          <button
+            pButton
+            type="button"
+            label="Sau"
+            icon="pi pi-chevron-right"
+            iconPos="right"
+            severity="secondary"
+            [outlined]="true"
+            [disabled]="currentPage === totalPages"
+            (click)="goToPage(currentPage + 1)"
+          ></button>
+        </div>
+      </div>
+
+      <div *ngIf="!cards.length" class="empty-state">
+        Không có card nào trong set này.
+      </div>
+    </ng-container>
+  </div>
+</section>

@@ -1,11 +1,12 @@
 import { Component, computed, effect, signal, inject } from "@angular/core";
 import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
 import { NgIf } from "@angular/common";
+import { ButtonModule } from "primeng/button";
 import { CartService } from "./cards/cart.service";
 
 @Component({
   selector: "app-root",
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgIf],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgIf, ButtonModule],
   templateUrl: "./app.html",
   styleUrl: "./app.css",
 })

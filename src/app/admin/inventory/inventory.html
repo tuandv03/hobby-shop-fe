@@ -6,6 +6,53 @@
       <p class="text-slate-600">Manage your card inventory and stock levels</p>
     </div>
 
+    <!-- Sync New Sets -->
+    <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-6">
+      <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h2 class="text-lg font-semibold text-slate-800">Sync New Sets (EN)</h2>
+          <p class="text-sm text-slate-600 mt-1">
+            Last synced TCG date:
+            <span class="font-medium text-slate-800">{{ lastTcgDate || 'Never synced' }}</span>
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <button
+            (click)="checkNewestSets()"
+            [disabled]="syncing"
+            class="px-4 py-2 border border-slate-300 text-slate-700 hover:bg-slate-50 disabled:opacity-60 rounded-lg transition-colors"
+          >
+            Check New Sets
+          </button>
+          <button
+            (click)="syncCardsFromNewestSets()"
+            [disabled]="syncing"
+            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-medium rounded-lg transition-colors"
+          >
+            <span *ngIf="!syncing">Sync Cards</span>
+            <span *ngIf="syncing">Syncing...</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="syncMessage" class="mt-4 text-sm text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
+        {{ syncMessage }}
+      </div>
+      <div *ngIf="syncError" class="mt-4 text-sm text-red-700 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+        {{ syncError }}
+      </div>
+
+      <div *ngIf="newestSets.length" class="mt-4 border border-slate-200 rounded-lg overflow-hidden">
+        <div class="bg-slate-50 px-3 py-2 text-sm font-medium text-slate-700">Newest sets to import</div>
+        <div class="divide-y divide-slate-200">
+          <div *ngFor="let s of newestSets" class="px-3 py-2 text-sm flex items-center justify-between">
+            <span class="font-medium text-slate-800">{{ s.set_name }}</span>
+            <span class="text-slate-600">{{ s.set_code }} | {{ s.tcg_date || 'N/A' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Search Section -->
     <div class="bg-white rounded-lg shadow-sm border border-slate-200 p-6 mb-6">
       <div class="flex flex-col sm:flex-row gap-4">
