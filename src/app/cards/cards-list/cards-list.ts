@@ -36,10 +36,10 @@ export class CardsListComponent implements OnInit {
   loading = false;
   showFilters = true;
   first = 0;
-  pageSize = 24;
+  pageSize = 12;
   totalRecords = 0;
-  readonly pageSizeOptions = [24, 48, 96];
-  readonly skeletonItems = Array.from({ length: 6 }, (_, i) => i);
+  readonly pageSizeOptions = [12, 24, 48];
+  readonly skeletonItems = Array.from({ length: 12 }, (_, i) => i);
   private wishlist = new Set<number>();
   rarities: string[] = [
     "Common",

@@ -110,7 +110,7 @@
 
 .product-image-link {
   align-items: center;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 7 / 10;
   background: #f5f5f5;
   display: flex;
   justify-content: center;
@@ -121,7 +121,7 @@
 .product-image {
   height: 100%;
   object-fit: contain;
-  padding: 1.25rem;
+  padding: 0.75rem;
   transition: transform 180ms ease;
   width: 100%;
 }
@@ -250,6 +250,6 @@
   }
 
   .product-image {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 }
