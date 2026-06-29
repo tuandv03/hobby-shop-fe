@@ -33,6 +33,17 @@ export const CARDS_ROUTES: Routes = [
         data: { title: "Hot Cards", description: "Các lá bài đang hot." },
       },
       {
+        path: "my-inventory",
+        loadComponent: () =>
+          import("./my-inventory/my-inventory").then(
+            (c) => c.MyInventoryComponent,
+          ),
+        data: {
+          title: "My Inventory",
+          description: "Danh sach card dang co trong kho cua ban.",
+        },
+      },
+      {
         path: "archetypes",
         loadComponent: () =>
           import("../pages/placeholder/placeholder.component").then(

@@ -11,6 +11,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
       <nav class="flex flex-wrap gap-2 mb-6">
         <a
           routerLink="/cards"
+          [routerLinkActiveOptions]="{ exact: true }"
           routerLinkActive="bg-primary text-primaryForeground"
           class="btn"
           >All</a
@@ -26,6 +27,12 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from "@angular/router";
           routerLinkActive="bg-primary text-primaryForeground"
           class="btn"
           >Archetypes</a
+        >
+        <a
+          routerLink="/cards/my-inventory"
+          routerLinkActive="bg-primary text-primaryForeground"
+          class="btn"
+          >My Inventory</a
         >
         <a
           routerLink="/cards/by-set"

@@ -1,0 +1,194 @@
+<section class="inventory-page">
+  <header class="inventory-header">
+    <div>
+      <p class="eyebrow">My Inventory</p>
+      <h1>Cards in Stock</h1>
+      <p class="subtitle">Danh sach card dang co trong kho cua ban.</p>
+    </div>
+
+    <div class="inventory-stats">
+      <p-tag [value]="items.length + ' cards'" severity="info"></p-tag>
+      <p-tag [value]="totalStock + ' in stock'" severity="success"></p-tag>
+    </div>
+  </header>
+
+  <form class="inventory-toolbar" [formGroup]="filterForm" (ngSubmit)="search()">
+    <div class="filter-field wide">
+      <label for="inventorySearch">Search</label>
+      <input
+        id="inventorySearch"
+        type="text"
+        formControlName="search"
+        class="form-control"
+        placeholder="Card name or code"
+      />
+    </div>
+
+    <div class="filter-field">
+      <label for="inventorySetCode">Set code</label>
+      <input
+        id="inventorySetCode"
+        type="text"
+        formControlName="setCode"
+        class="form-control"
+        placeholder="RA04-EN001"
+      />
+    </div>
+
+    <div class="filter-field">
+      <label for="inventoryRarity">Rarity</label>
+      <input
+        id="inventoryRarity"
+        type="text"
+        formControlName="rarity"
+        class="form-control"
+        placeholder="Ultra Rare"
+      />
+    </div>
+
+    <div class="toolbar-actions">
+      <div class="view-toggle" aria-label="View mode">
+        <button
+          pButton
+          type="button"
+          class="p-button-text"
+          [class.is-active]="viewMode === 'grid'"
+          title="Grid"
+          (click)="setViewMode('grid')"
+        >
+          <i pButtonIcon class="pi pi-th-large"></i>
+        </button>
+        <button
+          pButton
+          type="button"
+          class="p-button-text"
+          [class.is-active]="viewMode === 'table'"
+          title="Table"
+          (click)="setViewMode('table')"
+        >
+          <i pButtonIcon class="pi pi-table"></i>
+        </button>
+      </div>
+
+      <button pButton type="button" severity="secondary" [outlined]="true" (click)="reset()">
+        <span pButtonLabel>Reset</span>
+      </button>
+      <button pButton type="submit" [disabled]="loading">
+        <i pButtonIcon class="pi pi-search"></i>
+        <span pButtonLabel>Search</span>
+      </button>
+    </div>
+  </form>
+
+  @if (loading) {
+    <div class="inventory-grid" aria-busy="true">
+      @for (item of skeletonItems; track item) {
+        <article class="inventory-card loading-card">
+          <p-skeleton width="100%" height="180px"></p-skeleton>
+          <p-skeleton width="70%" height="1rem" class="mt-3"></p-skeleton>
+          <p-skeleton width="45%" height="1rem" class="mt-2"></p-skeleton>
+        </article>
+      }
+    </div>
+  } @else if (error) {
+    <div class="error-state">
+      {{ error }}
+    </div>
+  } @else if (!items.length) {
+    <div class="empty-state">
+      <h2>No inventory found</h2>
+      <p>Thu doi keyword, set code hoac rarity khac.</p>
+    </div>
+  } @else {
+    @if (viewMode === "grid") {
+      <div class="inventory-grid">
+        @for (item of items; track trackByInventoryItem($index, item)) {
+          <article class="inventory-card">
+            <div class="card-image-wrap">
+              @if (item.imageUrl) {
+                <img [src]="item.imageUrl" [alt]="item.cardName" loading="lazy" />
+              } @else {
+                <div class="image-placeholder">No Image</div>
+              }
+            </div>
+
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="set-code">{{ item.setCode }}</span>
+                <span class="rarity">{{ item.rarity }}</span>
+              </div>
+
+              <h2 [title]="item.cardName">{{ item.cardName }}</h2>
+
+              <div class="stock-row">
+                <span>Ton kho</span>
+                <strong>{{ item.stockQuantity }}</strong>
+              </div>
+              @if (item.reservedQuantity > 0) {
+                <div class="reserved-row">{{ item.reservedQuantity }} reserved</div>
+              }
+            </div>
+
+            <button
+              pButton
+              type="button"
+              class="p-button-rounded cart-button"
+              title="Add to cart"
+              [disabled]="item.stockQuantity <= 0"
+              (click)="addToCart(item)"
+            >
+              <i pButtonIcon class="pi pi-shopping-cart"></i>
+            </button>
+          </article>
+        }
+      </div>
+    } @else {
+      <p-table
+        [value]="items"
+        styleClass="p-datatable-sm inventory-table"
+        responsiveLayout="scroll"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>STT</th>
+            <th>Ma card theo set</th>
+            <th>Card</th>
+            <th>Rarity</th>
+            <th>So luong ton kho</th>
+            <th aria-label="Actions"></th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+          <tr>
+            <td class="index-cell">{{ rowIndex + 1 }}</td>
+            <td class="set-code-cell">{{ item.setCode }}</td>
+            <td>
+              @if (item.cardId) {
+                <a [routerLink]="['/cards', item.cardId]" class="card-link">
+                  {{ item.cardName }}
+                </a>
+              } @else {
+                {{ item.cardName }}
+              }
+            </td>
+            <td>{{ item.rarity }}</td>
+            <td class="stock-cell">{{ item.stockQuantity }}</td>
+            <td class="action-cell">
+              <button
+                pButton
+                type="button"
+                class="p-button-rounded p-button-text"
+                title="Add to cart"
+                [disabled]="item.stockQuantity <= 0"
+                (click)="addToCart(item)"
+              >
+                <i pButtonIcon class="pi pi-shopping-cart"></i>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    }
+  }
+</section>

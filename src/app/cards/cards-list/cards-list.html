@@ -110,11 +110,11 @@
                   <div>
                     <h2 [title]="c.name">{{ c.name }}</h2>
                     <p>{{ c.type }}</p>
-                    @if (c.card_sets?.[0]?.set_rarity) {
-                      <span>{{ c.card_sets?.[0]?.set_rarity }}</span>
+                    @if (c.card_sets?.at(0)?.set_rarity; as rarity) {
+                      <span>{{ c.card_sets?.at(0)?.set_rarity }}</span>
                     }
                   </div>
-                  @if (c.card_sets?.[0]?.set_price) {
+                  @if (c.card_sets?.at(0)?.set_price; as price) {
                     <p-tag
                       [value]="c.card_sets?.[0]?.set_price"
                       severity="secondary"
