@@ -15,7 +15,16 @@ import {
 } from "../../core/yugioh-api.service";
 
 type ViewMode = "grid" | "table";
-type SortOption = "code" | "name" | "rarity" | "price";
+type SortOption = "code" | "name" | "rarity" | "category";
+
+interface SetCardDisplayRow {
+  cardId: number;
+  cardName: string;
+  setCode: string;
+  rarities: string[];
+  category: string;
+  imageUrlSmall?: string;
+}
 
 @Component({
   standalone: true,
@@ -53,7 +62,7 @@ export class SetBrowserComponent implements OnInit {
     { label: "Code", value: "code" },
     { label: "Name", value: "name" },
     { label: "Rarity", value: "rarity" },
-    { label: "Giá tiền", value: "price" },
+    { label: "Category", value: "category" },
   ];
   readonly viewModeOptions = [
     { label: "Grid", value: "grid" },
@@ -68,34 +77,61 @@ export class SetBrowserComponent implements OnInit {
     return Math.max(1, Math.ceil(this.sortedCards.length / this.pageSize));
   }
 
-  get sortedCards(): YgoCardPrintVersion[] {
-    return [...this.cards].sort((a, b) => {
+  get groupedCards(): SetCardDisplayRow[] {
+    const grouped = new Map<string, SetCardDisplayRow>();
+
+    for (const card of this.cards) {
+      const key = `${card.card_id}|${card.set_code}`;
+      const current = grouped.get(key);
+
+      if (current) {
+        if (card.set_rarity && !current.rarities.includes(card.set_rarity)) {
+          current.rarities.push(card.set_rarity);
+        }
+        continue;
+      }
+
+      grouped.set(key, {
+        cardId: card.card_id,
+        cardName: card.card_name,
+        setCode: card.set_code,
+        rarities: card.set_rarity ? [card.set_rarity] : ["Unknown"],
+        category: card.type || "-",
+        imageUrlSmall: card.image_url_small,
+      });
+    }
+
+    return Array.from(grouped.values());
+  }
+
+  get sortedCards(): SetCardDisplayRow[] {
+    return [...this.groupedCards].sort((a, b) => {
       switch (this.sortBy) {
         case "name":
-          return this.compareText(a.card_name, b.card_name);
+          return this.compareText(a.cardName, b.cardName);
         case "rarity":
-          return this.compareText(a.set_rarity, b.set_rarity);
-        case "price":
-          return this.getSetPrice(a) - this.getSetPrice(b);
+          return this.compareText(a.rarities.join(" "), b.rarities.join(" "));
+        case "category":
+          return this.compareText(a.category, b.category);
         case "code":
         default:
-          return this.compareText(a.set_code, b.set_code);
+          return this.compareText(a.setCode, b.setCode);
       }
     });
   }
 
-  get pagedCards(): YgoCardPrintVersion[] {
+  get pagedCards(): SetCardDisplayRow[] {
     const start = (this.currentPage - 1) * this.pageSize;
     return this.sortedCards.slice(start, start + this.pageSize);
   }
 
   get pageStart(): number {
-    if (!this.cards.length) return 0;
+    if (!this.groupedCards.length) return 0;
     return (this.currentPage - 1) * this.pageSize + 1;
   }
 
   get pageEnd(): number {
-    return Math.min(this.currentPage * this.pageSize, this.cards.length);
+    return Math.min(this.currentPage * this.pageSize, this.groupedCards.length);
   }
 
   get pageNumbers(): number[] {
@@ -150,10 +186,6 @@ export class SetBrowserComponent implements OnInit {
     this.currentPage = Math.min(Math.max(page, 1), this.totalPages);
   }
 
-  openCard(cardId: number): void {
-    this.router.navigate(["/cards", cardId]);
-  }
-
   private loadCardsForSelectedSet(updateUrl: boolean): void {
     const set = this.selectedSet;
     if (!set) {
@@ -185,9 +217,5 @@ export class SetBrowserComponent implements OnInit {
 
   private compareText(a = "", b = ""): number {
     return a.localeCompare(b, undefined, { numeric: true, sensitivity: "base" });
-  }
-
-  private getSetPrice(card: YgoCardPrintVersion): number {
-    return Number.parseFloat((card.set_price || "0").replace(/[^0-9.]/g, "")) || 0;
   }
 }

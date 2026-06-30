@@ -223,13 +223,19 @@
 }
 
 .card-link {
-  color: #2563eb;
+  color: #1f4393;
   font-weight: 700;
   text-decoration: none;
 }
 
-.card-link:hover {
+.card-link:hover,
+.card-link:focus {
+  color: #1f4393;
   text-decoration: underline;
+}
+
+.rarity-link {
+  display: block;
 }
 
 .empty-state,

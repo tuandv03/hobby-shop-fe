@@ -186,18 +186,26 @@
   display: block;
 }
 
-:host ::ng-deep .set-table .p-datatable-tbody > tr {
-  cursor: pointer;
-}
-
 .set-code-cell,
 .price-cell {
   font-weight: 700;
   white-space: nowrap;
 }
 
-.price-cell {
-  color: #dc2626;
+.table-link {
+  color: #1f4393;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.table-link:hover,
+.table-link:focus {
+  color: #1f4393;
+  text-decoration: underline;
+}
+
+.rarity-link {
+  display: block;
 }
 
 .pagination-bar {

@@ -15,13 +15,15 @@
               [alt]="cardDetail.name"
             />
           </figure>
-
-          <figure class="media-tile" *ngIf="cardDetail.images?.[0]?.image_url_cropped">
-            <img
-              [src]="cardDetail.images?.[0]?.image_url_cropped"
-              [alt]="cardDetail.name + ' cropped artwork'"
-            />
-          </figure>
+          @if (cardDetail.images?.[0]?.image_url_cropped && (cardDetail.images?.length ?? 0) > 1) {
+            <figure class="media-tile">
+              <img
+                [src]="cardDetail.images?.[0]?.image_url_cropped"
+                [alt]="cardDetail.name + ' cropped artwork'"
+              />
+            </figure>
+          }
+          
 
           <figure
             class="media-tile"

@@ -144,7 +144,7 @@
       </div>
     } @else {
       <p-table
-        [value]="items"
+        [value]="tableItems"
         styleClass="p-datatable-sm inventory-table"
         responsiveLayout="scroll"
       >
@@ -162,7 +162,15 @@
         <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
           <tr>
             <td class="index-cell">{{ rowIndex + 1 }}</td>
-            <td class="set-code-cell">{{ item.setCode }}</td>
+            <td class="set-code-cell">
+              @if (item.cardId) {
+                <a [routerLink]="['/cards', item.cardId]" class="card-link">
+                  {{ item.setCode }}
+                </a>
+              } @else {
+                {{ item.setCode }}
+              }
+            </td>
             <td>
               @if (item.cardId) {
                 <a [routerLink]="['/cards', item.cardId]" class="card-link">
@@ -172,7 +180,17 @@
                 {{ item.cardName }}
               }
             </td>
-            <td>{{ item.rarity }}</td>
+            <td>
+              @for (rarity of item.rarities; track rarity) {
+                @if (item.cardId) {
+                  <a [routerLink]="['/cards', item.cardId]" class="card-link rarity-link">
+                    {{ rarity }}
+                  </a>
+                } @else {
+                  <span class="rarity-link">{{ rarity }}</span>
+                }
+              }
+            </td>
             <td class="stock-cell">{{ item.stockQuantity }}</td>
             <td class="action-cell">
               <button

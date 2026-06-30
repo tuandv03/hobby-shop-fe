@@ -12,6 +12,15 @@ import { MyInventoryService } from "./my-inventory.service";
 
 type ViewMode = "grid" | "table";
 
+interface MyInventoryTableItem {
+  cardId?: number;
+  cardName: string;
+  setCode: string;
+  rarities: string[];
+  stockQuantity: number;
+  reservedQuantity: number;
+}
+
 @Component({
   standalone: true,
   selector: "app-my-inventory",
@@ -52,6 +61,35 @@ export class MyInventoryComponent implements OnInit {
 
   get totalStock(): number {
     return this.items.reduce((total, item) => total + item.stockQuantity, 0);
+  }
+
+  get tableItems(): MyInventoryTableItem[] {
+    const grouped = new Map<string, MyInventoryTableItem>();
+
+    for (const item of this.items) {
+      const key = `${item.cardId ?? "card"}|${item.setCode}`;
+      const current = grouped.get(key);
+
+      if (current) {
+        if (item.rarity && !current.rarities.includes(item.rarity)) {
+          current.rarities.push(item.rarity);
+        }
+        current.stockQuantity += item.stockQuantity;
+        current.reservedQuantity += item.reservedQuantity;
+        continue;
+      }
+
+      grouped.set(key, {
+        cardId: item.cardId,
+        cardName: item.cardName,
+        setCode: item.setCode,
+        rarities: item.rarity ? [item.rarity] : ["Unknown"],
+        stockQuantity: item.stockQuantity,
+        reservedQuantity: item.reservedQuantity,
+      });
+    }
+
+    return Array.from(grouped.values());
   }
 
   setViewMode(mode: ViewMode): void {
