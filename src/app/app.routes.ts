@@ -1,8 +1,11 @@
 import { Routes } from "@angular/router";
-import { HomePageComponent } from "./pages/home/home.component";
 
 export const routes: Routes = [
-  { path: "", component: HomePageComponent, title: "Yu-Gi-Oh! Card Shop" },
+  {
+    path: "",
+    loadChildren: () =>
+      import("./pages/home/home.module").then((m) => m.HomeModule),
+  },
   {
     path: "cards",
     loadChildren: () =>

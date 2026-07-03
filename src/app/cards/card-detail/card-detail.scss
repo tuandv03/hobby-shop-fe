@@ -152,21 +152,6 @@
   }
 }
 
-.price-list {
-  display: grid;
-  gap: 0.875rem;
-
-  div {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  span {
-    color: #707072;
-  }
-}
-
 .sets-section {
   margin-top: 4rem;
 }
@@ -216,6 +201,27 @@
     color: #707072;
     margin: 0;
   }
+}
+
+.set-card__main {
+  min-width: 0;
+}
+
+.set-code-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.set-code-list span {
+  background: #f8fafc;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  color: #4c5c6d;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.35rem 0.6rem;
 }
 
 .set-meta {

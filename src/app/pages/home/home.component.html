@@ -1,0 +1,96 @@
+<section class="home-hero position-relative overflow-hidden">
+  <div class="container-xxl px-3 px-md-4 py-5">
+    <div class="row align-items-center g-4 g-lg-5">
+      <div class="col-lg-6">
+        <div class="d-inline-flex align-items-center gap-2 mb-3">
+          <span class="badge">Shop Yu-Gi-Oh!</span>
+          <span class="badge">Giao diện hiện đại</span>
+        </div>
+        <h1 class="home-hero__title">Yu-Gi-Oh! Card Shop</h1>
+        <p class="home-hero__text">
+          Tìm kiếm, sưu tầm và mua các thẻ bài Yu-Gi-Oh! chính hãng. Giao diện
+          tối ưu cho trải nghiệm mua sắm trên web.
+        </p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a routerLink="/cards" class="btn btn-primary">Khám phá thẻ</a>
+          <a routerLink="/sets" class="btn btn-outline-secondary">Xem set mới</a>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="home-showcase">
+          <ng-container *ngFor="let img of showcaseImages; let i = index">
+            <img
+              [src]="img"
+              alt="Card"
+              [class.home-showcase__card--tilt-left]="i % 2 === 0"
+              [class.home-showcase__card--tilt-right]="i % 2 !== 0"
+              class="home-showcase__card"
+            />
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="container-xxl px-3 px-md-4 py-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="section-title">Card nổi bật</h2>
+    <a routerLink="/cards" class="section-link">Xem tất cả →</a>
+  </div>
+
+  <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-4">
+    <ng-container *ngIf="hotCards.length; else loadingCards">
+      <div *ngFor="let c of hotCards" class="col">
+        <a [routerLink]="['/detail', c.id]" class="card featured-card h-100">
+          <div class="featured-card__image">
+            <img [src]="c.card_images[0].image_url_small" [alt]="c.name" />
+          </div>
+          <div class="featured-card__body">
+            <h3 class="featured-card__title" title="{{ c.name }}">
+              {{ c.name }}
+            </h3>
+            <div class="featured-card__meta">
+              <span>{{ c.type }}</span>
+              <!-- <strong *ngIf="+(c.card_prices[0]?.tcgplayer_price || 0) > 0">
+                &#36;{{ c.card_prices[0].tcgplayer_price }}
+              </strong> -->
+            </div>
+          </div>
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-template #loadingCards>
+      <div class="col-12 text-center text-mutedForeground">
+        Đang tải card nổi bật...
+      </div>
+    </ng-template>
+  </div>
+</section>
+
+<section class="container-xxl px-3 px-md-4 pb-5">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h2 class="section-title">Set mới phát hành</h2>
+    <a routerLink="/sets" class="section-link">Xem tất cả →</a>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    <ng-container *ngIf="latestSets.length; else loadingSets">
+      <div *ngFor="let s of latestSets" class="col">
+        <a [routerLink]="['/sets', s.set_code]" class="card set-card h-100">
+          <div>
+            <h3 class="set-card__title">{{ s.set_name }}</h3>
+            <p class="set-card__code">Mã: {{ s.set_code }}</p>
+          </div>
+          <span class="badge">{{ s.tcg_date | date: "MMM y" }}</span>
+        </a>
+      </div>
+    </ng-container>
+
+    <ng-template #loadingSets>
+      <div class="col-12 text-center text-mutedForeground">Đang tải set...</div>
+    </ng-template>
+  </div>
+</section>

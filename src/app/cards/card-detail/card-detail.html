@@ -99,45 +99,30 @@
             <p>{{ cardDetail.description || cardDetail.desc }}</p>
           </section>
 
-          <section class="detail-section" *ngIf="cardDetail.prices?.length">
-            <h2>Market Price</h2>
-            <div class="price-list">
-              <div>
-                <span>TCGplayer</span>
-                <strong>{{ cardDetail.prices?.[0]?.tcgplayer_price }}</strong>
-              </div>
-              <div>
-                <span>Cardmarket</span>
-                <strong>{{ cardDetail.prices?.[0]?.cardmarket_price }}</strong>
-              </div>
-              <div>
-                <span>eBay</span>
-                <strong>{{ cardDetail.prices?.[0]?.ebay_price }}</strong>
-              </div>
-            </div>
-          </section>
         </div>
       </aside>
     </div>
 
-    <section class="sets-section" *ngIf="cardDetail.sets && cardDetail.sets.length > 0">
+    <section class="sets-section" *ngIf="availableSets.length > 0">
       <div class="section-heading">
         <div>
           <p>Availability</p>
           <h2>Available Sets</h2>
         </div>
-        <span>{{ cardDetail.sets.length }} printings</span>
+        <span>{{ availableSets.length }} printings</span>
       </div>
 
       <div class="sets-grid">
-        <article class="set-card" *ngFor="let set of cardDetail.sets">
-          <div>
+        <article class="set-card" *ngFor="let set of availableSets">
+          <div class="set-card__main">
             <h3>{{ set.set_name }}</h3>
-            <p>{{ set.set_code }}</p>
+            <div class="set-code-list">
+              <span>{{ set.set_code }}</span>
+              <span *ngIf="set.set_rarity_code">{{ set.set_rarity_code }}</span>
+            </div>
           </div>
           <div class="set-meta">
             <p-tag [value]="set.set_rarity" severity="secondary"></p-tag>
-            <strong>{{ set.set_price }}</strong>
           </div>
         </article>
       </div>
