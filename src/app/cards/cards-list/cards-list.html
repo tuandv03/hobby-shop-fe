@@ -15,6 +15,7 @@
     <form
       class="listing-layout"
       [class.filters-hidden]="!showFilters"
+      [formGroup]="filterForm"
       (ngSubmit)="search()"
     >
       @if (showFilters) {
@@ -29,15 +30,16 @@
           <section class="filter-group">
             <h2>Search</h2>
             <input
-              [(ngModel)]="name"
-              name="name"
+              formControlName="name"
               type="text"
               placeholder="Blue-Eyes"
               class="form-control"
+              lang="en"
+              spellcheck="true"
+              autocomplete="off"
             />
             <input
-              [(ngModel)]="code"
-              name="code"
+              formControlName="code"
               type="text"
               placeholder="SDK-001"
               class="form-control"
@@ -46,7 +48,7 @@
 
           <section class="filter-group">
             <h2>Card Type</h2>
-            <select [(ngModel)]="type" name="type" class="form-select">
+            <select formControlName="type" class="form-select">
               <option value="">All Types</option>
               <option value="Spell Card">Spell Card</option>
               <option value="Trap Card">Trap Card</option>
@@ -57,7 +59,7 @@
 
           <section class="filter-group">
             <h2>Rarity</h2>
-            <select [(ngModel)]="rarity" name="rarity" class="form-select">
+            <select formControlName="rarity" class="form-select">
               <option value="">All Rarities</option>
               @for (r of rarities; track r) {
                 <option [value]="r">{{ r }}</option>
@@ -84,6 +86,22 @@
           </button>
         </div>
 
+        @if (suggestion) {
+          <div class="alert alert-info d-flex align-items-center justify-content-between gap-3" role="status">
+            <span>
+              Showing results for <strong>{{ suggestion.suggestedQuery }}</strong>
+              instead of “{{ suggestion.originalQuery }}”.
+            </span>
+            <button pButton type="button" class="p-button-sm" (click)="applySuggestion()">
+              <span pButtonLabel>Use suggestion</span>
+            </button>
+          </div>
+        }
+
+        @if (error) {
+          <div class="alert alert-danger" role="alert">{{ error }}</div>
+        }
+
         @if (loading) {
           <div class="loading-grid">
             @for (item of skeletonItems; track item) {
@@ -100,7 +118,7 @@
               <article class="product-card">
                 <a [routerLink]="['/cards', c.id]" class="product-image-link">
                   <img
-                    [src]="c.card_images[0]?.image_url_small"
+                    [src]="c.imageUrlSmall"
                     [alt]="c.name"
                     class="product-image"
                   />
@@ -110,13 +128,13 @@
                   <div>
                     <h2 [title]="c.name">{{ c.name }}</h2>
                     <p>{{ c.type }}</p>
-                    @if (c.card_sets?.at(0)?.set_rarity; as rarity) {
-                      <span>{{ c.card_sets?.at(0)?.set_rarity }}</span>
+                    @if (c.setRarity; as rarity) {
+                      <span>{{ rarity }}</span>
                     }
                   </div>
-                  @if (c.card_sets?.at(0)?.set_price; as price) {
+                  @if (c.setPrice; as price) {
                     <p-tag
-                      [value]="c.card_sets?.[0]?.set_price"
+                      [value]="price.toString()"
                       severity="secondary"
                     ></p-tag>
                   }

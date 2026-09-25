@@ -5,5 +5,5 @@ export interface CardRequest {
   rarity?: string;
   archetype?: string;
   page?: number;
-  size?: number;
+  pageSize?: number;
 }

@@ -1,12 +1,21 @@
-import { Card } from "../../shared/models/card.model";
 import { Pagination } from "../../shared/models/pagination.model";
 
+export interface CardListItem {
+  id: number;
+  name: string;
+  type?: string;
+  imageUrlSmall?: string;
+  setRarity?: string;
+  setPrice?: number;
+}
 
-export interface CardListItem extends Card {
-  inStock: boolean;   // 👈 thêm flag
+export interface CardSearchSuggestion {
+  originalQuery: string;
+  suggestedQuery: string;
 }
 
 export interface CardListResponse {
   items: CardListItem[];
   pagination: Pagination;
+  suggestion?: CardSearchSuggestion;
 }

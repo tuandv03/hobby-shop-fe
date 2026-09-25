@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { BaseService } from "../core/base-service.service";
 import { CardDetail } from "./models/card-detail.model";
+import { CardRequest } from "./models/card-request.model";
+import { CardListResponse } from "./models/card-list-response.model";
 
 export interface Card {
   id: number;
@@ -41,8 +43,8 @@ export interface CardSyncState {
 
 @Injectable({ providedIn: "root" })
 export class CardsService extends BaseService {
-  getCards(filter: any): Observable<Card[]> {
-    return this.get<Card[]>("cards", filter);
+  getCards(filter: CardRequest): Observable<CardListResponse> {
+    return this.get<CardListResponse>("cards", filter);
   }
 
   getCardDetailById(id: string | number): Observable<CardDetail> {

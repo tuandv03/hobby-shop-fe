@@ -6,7 +6,7 @@ import { environment } from "../../environments";
 
 export abstract class BaseService {
   protected http = inject(HttpClient);
-  protected baseUrl = environment.apiBaseUrl;
+  protected baseUrl = environment.apiBaseUrl.replace(/\/+$/, "");
 
   // Default headers
   protected getDefaultHeaders(): HttpHeaders {
